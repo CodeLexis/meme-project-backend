@@ -1,5 +1,7 @@
-venv/
 __pycache__/*
+venv/
 
 *.pyc
+*.xml
+
 app.yaml
