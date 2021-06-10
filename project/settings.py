@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y-dul)ra$^hoa_&@dy4zd@ss^4qw!lebx^(jnmpyvb7us^s8#u'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG'] == 'True'
@@ -142,3 +142,8 @@ GS_BUCKET_NAME = os.environ['GS_BUCKET_NAME']
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
     "./meme-project-316312-80cabf754bee.json"
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20
+}
