@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-y-dul)ra$^hoa_&@dy4zd@ss^4qw!lebx^(jnmpyvb7us^s8#u
 DEBUG = os.environ['DEBUG'] == 'True'
 
 ALLOWED_HOSTS = [
-    'meme-project-316312.appspot.com',
+    'meme-project-316312.uc.r.appspot.com',
     'localhost',
     '127.0.0.1',
 ]
@@ -126,7 +126,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'), # static directory (in the top level directory) for local testing
+    os.path.join(BASE_DIR, 'static'),
 ]
 STATIC_URL = os.environ['STATIC_URL']
 STATIC_ROOT = os.path.join(

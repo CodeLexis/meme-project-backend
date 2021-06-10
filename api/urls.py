@@ -4,4 +4,4 @@ from .views import MemeView
 
 
 router = routers.DefaultRouter()
-router.register(r'', MemeView)
+router.register(r'memes', MemeView)
