@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from google.oauth2 import service_account
@@ -25,10 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y-dul)ra$^hoa_&@dy4zd@ss^4qw!lebx^(jnmpyvb7us^s8#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG'] == 'True'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    'meme-project-316312.appspot.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 # Application definition
 
@@ -121,15 +125,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'), # static directory (in the top level directory) for local testing
+]
+STATIC_URL = os.environ['STATIC_URL']
+STATIC_ROOT = os.path.join(
+    os.path.dirname(BASE_DIR), os.environ['GS_BUCKET_NAME']
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'cl_meme_bucket'
+GS_BUCKET_NAME = os.environ['GS_BUCKET_NAME']
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
     "./meme-project-316312-80cabf754bee.json"
 )
