@@ -5,6 +5,7 @@ venv/
 *.gitignore
 *.pyc
 *.xml
+*.sqlite*
 *.env
 
 app.yaml
