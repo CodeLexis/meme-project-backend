@@ -6,6 +6,6 @@ venv/
 *.pyc
 *.xml
 *.sqlite*
-*.env.local
+*.env*
 
 app.yaml
