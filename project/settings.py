@@ -9,12 +9,10 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import io
 import os
 from pathlib import Path
 
 import environ
-from google.cloud import secretmanager
 from google.oauth2 import service_account
 
 
@@ -24,19 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
 
-env_file = os.path.join(BASE_DIR, ".env")
+env_file = os.path.join(BASE_DIR, '.env.local')
 if os.path.isfile(env_file):
     env.read_env(env_file)
 elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     # Pull secrets from Secret Manager
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
-
-    client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
-    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
-    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
-
-    env.read_env(io.StringIO(payload))
+    env.read_env(os.path.join(BASE_DIR, '.env'))
 else:
     raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 
