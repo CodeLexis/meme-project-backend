@@ -4,5 +4,5 @@ venv/
 
 *.pyc
 *.xml
-*.dbsqlite
+*.sqlite*
 *.env
