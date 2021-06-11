@@ -1,3 +1,4 @@
+from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -13,6 +14,7 @@ class MemeView(viewsets.ModelViewSet):
     serializer_class = MemeSerializer
 
     def retrieve(self, request, *args, **kwargs):
+        print('AAAAAA', request.params)
         instance = self.get_object()
         serializer = self.get_serializer(instance)
 
