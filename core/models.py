@@ -25,7 +25,7 @@ class Meme(BaseModel):
     )
     view_count = models.IntegerField(default=EMPTY_COUNT)
 
-    def get_tags(self):
+    def tags_list(self):
         return ', '.join([t.name for t in self.tags.all()])
 
 

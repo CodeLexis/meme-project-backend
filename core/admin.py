@@ -6,7 +6,7 @@ from .models import Meme, Tag
 class MemeAdmin(admin.ModelAdmin):
     list_display = (
         'date_created', 'download_count', 'impression_count', 'view_count',
-        'content', 'get_tags',
+        'content', 'tags_list',
     )
     fields = ['content', 'tags']
 
