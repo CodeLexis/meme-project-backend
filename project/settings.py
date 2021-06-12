@@ -17,14 +17,12 @@ import environ
 from google.cloud import secretmanager
 from google.oauth2 import service_account
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 env = environ.Env()
 
-env_file = os.path.join(BASE_DIR, ".env")
+env_file = os.path.join(BASE_DIR, ".env.local")
 if os.path.isfile(env_file):
     env.read_env(env_file)
 elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
@@ -34,13 +32,17 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     client = secretmanager.SecretManagerServiceClient()
     settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
     name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
-    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+    payload = (
+        client.access_secret_version(name=name).payload.data.decode("UTF-8")
+    )
 
     env.read_env(io.StringIO(payload))
 else:
-    raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
-
-
+    raise (
+        Exception(
+            "No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found."
+        )
+    )
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -101,11 +103,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {'default': env.db()}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -125,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -139,15 +138,14 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_URL = os.environ['STATIC_URL']
+STATIC_URL = env('STATIC_URL')
 STATIC_ROOT = os.path.join(
-    os.path.dirname(BASE_DIR), os.environ['GS_BUCKET_NAME']
+    os.path.dirname(BASE_DIR), env('GS_BUCKET_NAME')
 )
 
 # Default primary key field type
@@ -155,7 +153,7 @@ STATIC_ROOT = os.path.join(
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = os.environ['GS_BUCKET_NAME']
+GS_BUCKET_NAME = env('GS_BUCKET_NAME')
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
     "./meme-project-316312-80cabf754bee.json"
 )
