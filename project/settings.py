@@ -51,7 +51,7 @@ else:
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env('DEBUG') == 'True'
 
 ALLOWED_HOSTS = [
     'meme-project-316312.uc.r.appspot.com',
